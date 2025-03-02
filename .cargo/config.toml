@@ -1,16 +1,12 @@
 [build]
-target = "rpi3.json"
-
-[target.aarch64-unknown-none]
-linker = "/usr/local/opt/llvm/bin/ld.lld"
-
+target = "aarch64-unknown-none-softfloat"
 
 [target.'cfg(all())']
 rustflags = [
-  "-C", "link-arg=-Tlinker.ld",
-  "-C", "link-arg=--strip-all"
+  "-C", "link-arg=--library-path=.",
+  "-C", "link-arg=--script=linker.ld"
 ]
 
 [unstable]
+build-std = ["core"]
 build-std-features = ["compiler-builtins-mem"]
-build-std = ["core", "compiler_builtins"]
