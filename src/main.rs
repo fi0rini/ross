@@ -36,7 +36,7 @@ fn gpio_clear() {
     unsafe { GPIO_CLR0.write_volatile(1 << 16); }
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 fn kmain() -> ! {
     gpio_init();
 
