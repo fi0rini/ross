@@ -1,5 +1,5 @@
 [package]
-name = "bootloader"
+name = "boot"
 version = "0.1.0"
 edition = "2024"
 
@@ -10,7 +10,9 @@ panic = "abort"
 panic = "abort"
 
 [dependencies]
-core2 = "0.4"
-volatile = { path = "../lib/volatile" }
 pi = { path = "../lib/pi" }
+volatile = { path = "../lib/volatile" }
 xmodem = { path = "../lib/xmodem" }
+
+[features]
+no_std = []

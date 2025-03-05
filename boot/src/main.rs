@@ -7,6 +7,7 @@ mod init;
 use pi;
 use pi::timer::spin_sleep;
 use pi::gpio::Gpio;
+use core::arch::asm;
 use core::time::Duration;
 
 /// Start address of the binary to load and of the bootloader.
@@ -20,10 +21,13 @@ const BINARY_START: *mut u8 = BINARY_START_ADDR as *mut u8;
 const MAX_BINARY_SIZE: usize = BOOTLOADER_START_ADDR - BINARY_START_ADDR;
 
 /// Branches to the address `addr` unconditionally.
+/// 
+#[inline(always)]
 unsafe fn jump_to(addr: *mut u8) -> ! {
-    asm!("br $0" : : "r"(addr as usize));
+    asm!("br ${0}", in(reg) addr, options(noreturn));
+    
     loop {
-        asm!("wfe" :::: "volatile")
+        asm!("wfe", options(nomem, nostack, preserves_flags, volatile));
     }
 }
 

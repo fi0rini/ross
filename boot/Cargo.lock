@@ -3,7 +3,7 @@
 version = 4
 
 [[package]]
-name = "bootloader"
+name = "boot"
 version = "0.1.0"
 dependencies = [
  "pi",
