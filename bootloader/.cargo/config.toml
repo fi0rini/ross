@@ -1,0 +1,12 @@
+[build]
+target = "aarch64-unknown-none-softfloat"
+
+[target.'cfg(all())']
+rustflags = [
+  "-C", "link-arg=--library-path=.",
+  "-C", "link-arg=--script=.cargo/linker.ld"
+]
+
+[unstable]
+build-std = ["core"]
+build-std-features = ["compiler-builtins-mem"]
