@@ -1,4 +1,4 @@
-BIN_OUT := kernel8.img
+BIN_OUT := boot
 
 clean:
 	rm -rf target $(BIN_OUT)

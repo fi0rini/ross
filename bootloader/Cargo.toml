@@ -10,6 +10,7 @@ panic = "abort"
 panic = "abort"
 
 [dependencies]
+core2 = "0.4"
 volatile = { path = "../lib/volatile" }
 pi = { path = "../lib/pi" }
 xmodem = { path = "../lib/xmodem" }
