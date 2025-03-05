@@ -21,6 +21,5 @@ fn kmain() -> ! {
         spin_sleep(&delay);
         pin16.clear();
         spin_sleep(&delay);
-
     }
 }

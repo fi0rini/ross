@@ -1,5 +1,5 @@
 [package]
-name = "rust_os"
+name = "kern"
 version = "0.1.0"
 edition = "2024"
 
@@ -10,5 +10,5 @@ panic = "abort"
 panic = "abort"
 
 [dependencies]
-volatile = { path = "./lib/volatile" }
-pi = { path = "./lib/pi" }
+volatile = { path = "../lib/volatile" }
+pi = { path = "../lib/pi" }

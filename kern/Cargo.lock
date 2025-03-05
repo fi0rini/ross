@@ -3,17 +3,17 @@
 version = 4
 
 [[package]]
-name = "pi"
+name = "kern"
 version = "0.1.0"
 dependencies = [
+ "pi",
  "volatile",
 ]
 
 [[package]]
-name = "rust_os"
+name = "pi"
 version = "0.1.0"
 dependencies = [
- "pi",
  "volatile",
 ]
 
