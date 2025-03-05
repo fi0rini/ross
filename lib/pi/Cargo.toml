@@ -6,3 +6,4 @@ edition = "2024"
 
 [dependencies]
 volatile = { path = "../volatile" }
+core2 = { version = "0.4", default-features = false }

@@ -35,8 +35,6 @@ unsafe fn jump_to(addr: *mut u8) -> ! {
 fn kmain() -> ! {
     let delay = Duration::from_secs(1);
     let mut pin16 = Gpio::new(16).into_output();
-    let mut uartTx = Gpio::new(14).into_alt(pi::gpio::Function::Alt0);
-    let mut uartRx = Gpio::new(15).into_alt(pi::gpio::Function::Alt0);
 
     loop {
         pin16.set();
