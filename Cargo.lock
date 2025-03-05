@@ -3,5 +3,20 @@
 version = 4
 
 [[package]]
+name = "pi"
+version = "0.1.0"
+dependencies = [
+ "volatile",
+]
+
+[[package]]
 name = "rust_os"
+version = "0.1.0"
+dependencies = [
+ "pi",
+ "volatile",
+]
+
+[[package]]
+name = "volatile"
 version = "0.1.0"

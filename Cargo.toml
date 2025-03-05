@@ -10,3 +10,5 @@ panic = "abort"
 panic = "abort"
 
 [dependencies]
+volatile = { path = "./lib/volatile" }
+pi = { path = "./lib/pi" }

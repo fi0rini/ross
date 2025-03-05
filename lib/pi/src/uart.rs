@@ -1,9 +1,6 @@
 use core::fmt;
 use core::time::Duration;
 
-use shim::io;
-use shim::const_assert_size;
-
 use volatile::prelude::*;
 use volatile::{Volatile, ReadVolatile, Reserved};
 
@@ -95,7 +92,6 @@ impl MiniUart {
 // before writing any b'\n' byte.
 
 mod uart_io {
-    use super::io;
     use super::MiniUart;
     use volatile::prelude::*;
 

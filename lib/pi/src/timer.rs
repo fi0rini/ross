@@ -4,6 +4,8 @@ use core::time::Duration;
 use volatile::prelude::*;
 use volatile::{Volatile, ReadVolatile};
 
+/// The address where I/O peripherals are mapped to.
+const CLOCK_HZ: u64 = 250 * 1000 * 1000;
 /// The base address for the ARM system timer registers.
 const TIMER_REG_BASE: usize = IO_BASE + 0x3000;
 
@@ -32,17 +34,22 @@ impl Timer {
     /// Reads the system timer's counter and returns Duration.
     /// `CLO` and `CHI` together can represent the number of elapsed microseconds.
     pub fn read(&self) -> Duration {
-        unimplemented!()
+        let lo = self.registers.CLO.read() as u64;
+        let hi = self.registers.CHI.read() as u64;
+        let time = (hi << 32) | lo;
+        return Duration::from_micros(time);
     }
 }
 
 /// Returns current time.
 pub fn current_time() -> Duration {
-    unimplemented!()
+    let timer = Timer::new();
+    timer.read() 
 }
 
 /// Spins until `t` duration have passed.
-pub fn spin_sleep(t: Duration) {
-    unimplemented!()
+pub fn spin_sleep(t: &Duration) {
+    let timer = Timer::new();
+    let time = timer.read() + *t;
+    while timer.read() < time {}
 }
-
