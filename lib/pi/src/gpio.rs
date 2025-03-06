@@ -46,8 +46,6 @@ struct Registers {
     PUDCLK: [Volatile<u32>; 2],
 }
 
-/// Possible states for a GPIO pin.
-#[allow(unused_doc_comments)]
 states! {
     Uninitialized, Input, Output, Alt
 }
@@ -152,3 +150,46 @@ impl Gpio<Input> {
         (ret & val) > 0
     }
 }
+
+pub struct PinOut<State> {
+    pin: u8,
+    inner: Option<Gpio<State>>,
+}
+
+impl PinOut<Output> {
+    /// Creates a new instance of `PinOut`.
+    pub const fn new(pin: u8) -> PinOut <Output> {
+        PinOut { 
+            pin,
+            inner: None 
+        }
+    }
+
+    /// Initializes the console if it's not already initialized.
+    #[inline]
+    fn initialize(&mut self) {
+        if self.inner.is_none() {
+            self.inner = Some(Gpio::new(self.pin).into_output());
+        }
+    }
+
+    /// Returns a mutable borrow to the inner `MiniUart`, initializing it as
+    /// needed.
+    fn inner(&mut self) -> &mut Gpio<Output> {
+        self.initialize();
+        match &mut self.inner {
+            Some(pin) => pin,
+            None => panic!()
+        }
+    }
+
+    /// Reads a byte from the UART device, blocking until a byte is available.
+    pub fn on(&mut self) {
+        self.inner().set();
+    }
+
+    pub fn off(&mut self) {
+        self.inner().clear();
+    }
+}
+

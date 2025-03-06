@@ -1,0 +1,10 @@
+[package]
+name = "ttywrite"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4.5.31", features = ["derive"] }
+bitflags = "2.9.0"
+serial = "0.4"
+xmodem = { path = "../lib/xmodem/" }

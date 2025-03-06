@@ -4,7 +4,7 @@ use core::time::Duration;
 use volatile::prelude::*;
 use volatile::{Volatile, ReadVolatile, Reserved};
 
-use crate::timer::{self, Timer};
+use crate::timer::Timer;
 use crate::common::IO_BASE;
 use crate::gpio::{Gpio, Function};
 
@@ -18,7 +18,8 @@ const AUX_ENABLES: *mut Volatile<u8> = (IO_BASE + 0x215004) as *mut Volatile<u8>
 #[repr(u8)]
 enum LsrStatus {
     DataReady = 1,
-    TxAvailable = 1 << 5,
+    TxIdle = 1 << 6, // finished shifting out the last bit
+    TxEmpty = 1 << 5, // this bit is set if the transmit FIFO can accept at least one byte
 }
 
 #[repr(C)]
@@ -71,10 +72,10 @@ impl MiniUart {
         Gpio::new(14).into_alt(Function::Alt5);
         Gpio::new(15).into_alt(Function::Alt5);
 
-        registers.CNTL.write(0b00);
+        registers.CNTL.write(0b00); // turn off tx,rx
         registers.LCR.write(0b11);
         registers.BAUD.write(270);
-        registers.CNTL.write(0b11);
+        registers.CNTL.write(0b11); // turn on tx,rx
 
         return MiniUart {
             registers: registers,
@@ -90,8 +91,7 @@ impl MiniUart {
     /// Write the byte `byte`. This method blocks until there is space available
     /// in the output FIFO.
     pub fn write_byte(&mut self, byte: u8) {
-        let available = LsrStatus::TxAvailable as u8;
-        while (self.registers.LSR.read() & available) == 0 {}
+        while (self.registers.LSR.read() & LsrStatus::TxEmpty as u8) == 0 {}
         self.registers.IO.write(byte);
     }
 
@@ -99,7 +99,7 @@ impl MiniUart {
     /// method returns `true`, a subsequent call to `read_byte` is guaranteed to
     /// return immediately. This method does not block.
     pub fn has_byte(&self) -> bool {
-        self.registers.STAT.read() & 1 > 0
+        (self.registers.LSR.read() & LsrStatus::DataReady as u8) != 0
     }
 
     /// Blocks until there is a byte ready to read. If a read timeout is set,
@@ -134,6 +134,10 @@ impl MiniUart {
         while !self.has_byte() {}
         self.registers.IO.read()
     }
+
+    pub fn is_idle(&self) -> bool {
+        self.registers.LSR.read() & LsrStatus::TxIdle as u8 != 0
+    }
 }
 
 impl fmt::Write for MiniUart {
@@ -150,18 +154,8 @@ impl fmt::Write for MiniUart {
 
 mod uart_io {
     use super::MiniUart;
-    use volatile::prelude::*;
     use core2::io;
-    // FIXME: Implement `io::Read` and `io::Write` for `MiniUart`.
-    //
-    // The `io::Read::read()` implementation must respect the read timeout by
-    // waiting at most that time for the _first byte_. It should not wait for
-    // any additional bytes but _should_ read as many bytes as possible. If the
-    // read times out, an error of kind `TimedOut` should be returned.
-    //
-    // The `io::Write::write()` method must write all of the requested bytes
-    // before returning.
-
+    
     impl io::Read for MiniUart {
         fn read(&mut self, buf: &mut [u8]) -> Result<usize, io::Error> {
             let has_byte = self.wait_for_byte();
@@ -186,7 +180,8 @@ mod uart_io {
         }
 
         fn flush(&mut self) -> Result<(), io::Error> {
-            unimplemented!()
+            while !self.is_idle() {} 
+            Ok(())
         }
     }
     

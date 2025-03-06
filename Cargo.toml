@@ -1,2 +1,4 @@
 [workspace]
-members = ["kern", "boot"]
+members = ["kern", "boot", "lib/mutex", "lib/console", "lib/shim"]
+exclude = ["ttywrite"]
+resolver = "2"

@@ -1,7 +1,6 @@
 [package]
-name = "stack-vec"
+name = "mutex"
 version = "0.1.0"
-authors = []
 edition = "2024"
 
 [dependencies]

@@ -5,7 +5,7 @@ use volatile::prelude::*;
 use volatile::{Volatile, ReadVolatile};
 
 /// The address where I/O peripherals are mapped to.
-const CLOCK_HZ: u64 = 250 * 1000 * 1000;
+// const CLOCK_HZ: u64 = 250 * 1000 * 1000;
 /// The base address for the ARM system timer registers.
 const TIMER_REG_BASE: usize = IO_BASE + 0x3000;
 
