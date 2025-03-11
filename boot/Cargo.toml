@@ -10,14 +10,8 @@ panic = "abort"
 panic = "abort"
 
 [dependencies]
-console = { path = "../lib/console" }
 mutex = { path = "../lib/mutex" }
 pi = { path = "../lib/pi" }
 volatile = { path = "../lib/volatile" }
 shim = { path = "../lib/shim", features = ["no_std"] }
 xmodem = { path = "../lib/xmodem", features = ["no_std"] }
-
-
-[features]
-default = ["no_std"]
-no_std = ["shim/no_std"]

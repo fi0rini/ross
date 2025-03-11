@@ -3,27 +3,6 @@
 version = 4
 
 [[package]]
-name = "boot"
-version = "0.1.0"
-dependencies = [
- "console",
- "mutex",
- "pi",
- "shim",
- "volatile",
- "xmodem",
-]
-
-[[package]]
-name = "console"
-version = "0.1.0"
-dependencies = [
- "core2",
- "mutex",
- "pi",
-]
-
-[[package]]
 name = "core2"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -36,7 +15,10 @@ dependencies = [
 name = "kern"
 version = "0.1.0"
 dependencies = [
+ "mutex",
  "pi",
+ "shim",
+ "stack-vec",
  "volatile",
 ]
 
@@ -66,12 +48,9 @@ dependencies = [
 ]
 
 [[package]]
-name = "volatile"
+name = "stack-vec"
 version = "0.1.0"
 
 [[package]]
-name = "xmodem"
+name = "volatile"
 version = "0.1.0"
-dependencies = [
- "shim",
-]

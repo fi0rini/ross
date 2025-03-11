@@ -3,7 +3,7 @@ target = "aarch64-unknown-none-softfloat"
 
 [target.'cfg(all())']
 rustflags = [
-  "-C", "link-arg=--library-path=boot",
+  "-C", "link-arg=--library-path=.",
   "-C", "link-arg=--script=.cargo/linker.ld"
 ]
 

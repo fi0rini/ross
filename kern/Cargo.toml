@@ -10,5 +10,8 @@ panic = "abort"
 panic = "abort"
 
 [dependencies]
-volatile = { path = "../lib/volatile" }
+mutex = { path = "../lib/mutex" }
 pi = { path = "../lib/pi" }
+shim = { path = "../lib/shim", features = ["no_std"] }
+stack-vec = { path = "../lib/stack-vec" }
+volatile = { path = "../lib/volatile" }

@@ -1,11 +1,9 @@
-#![no_std]
-#![feature(decl_macro)]
+
 
 use core::{fmt, time::Duration};
 use pi::uart::MiniUart;
 
-use core2::io;
-
+use shim::io;
 
 /// A global singleton allowing read/write access to the console.
 pub struct Console {
