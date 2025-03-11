@@ -10,7 +10,6 @@ use pi::gpio::Gpio;
 pub mod console;
 pub mod shell;
 
-
 #[unsafe(no_mangle)]
 fn kmain() -> ! {
     Gpio::new(16).into_output().set();

@@ -45,6 +45,7 @@ impl<'a> Command<'a> {
 /// returns if the `exit` command is called.
 pub fn shell(prefix: &str) -> ! {
     loop {
+        kprint!("{} ", prefix);
         let mut idx: usize = 0;
         let mut buff: [u8; 512] = [0; 512];
         loop {
@@ -66,7 +67,7 @@ pub fn shell(prefix: &str) -> ! {
             buff[idx] = b;
             idx += 1;
         }
-        let mut s = &core::str::from_utf8(&buff).unwrap()[..];
+        let s = &core::str::from_utf8(&buff).unwrap()[..];
         let mut fields: [&str; 512] = [""; 512];
         match Command::parse(s, &mut fields) {
             Ok(cmd) => {
